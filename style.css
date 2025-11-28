@@ -93,14 +93,14 @@ body {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
 }
 
-/* OVERLAY LETTURA */
+/* OVERLAY LETTURA – STILE SPOTIFY LYRICS */
 
 .reader-overlay {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at top left, #1ed760 0, #020617 60%);
+  background: #265c48; /* verde scuro tipo screenshot */
   z-index: 50;
-  display: none; /* nascosto di default */
+  display: none;
   justify-content: center;
   align-items: stretch;
 }
@@ -111,24 +111,23 @@ body {
 
 .reader-shell {
   width: 100%;
-  max-width: none;           /* full width */
+  max-width: 900px;       /* larghezza massima “colonna” */
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 16px 32px 12px;   /* meno padding, stile player */
+  padding: 12px 16px 10px;
   color: #f9fafb;
-  height: 100vh;             /* full height */
+  height: 100vh;          /* full height */
 }
 
-/* Header compatto */
+/* Header molto compatto */
 
 .reader-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 16px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.6);
+  gap: 12px;
+  padding-bottom: 8px;
 }
 
 .reader-tag {
@@ -137,34 +136,34 @@ body {
   letter-spacing: 0.16em;
   color: #e5e7eb;
   opacity: 0.7;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .reader-title {
-  font-size: clamp(22px, 3vw, 28px); /* più piccolo, tipo barra Spotify */
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 4px;
+  font-size: 14px; /* come barra top Spotify */
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 2px;
 }
 
 .reader-meta {
-  font-size: 12px;
+  font-size: 11px;
   color: #e5e7eb;
   opacity: 0.7;
 }
 
 .reader-close {
   border: none;
-  background: rgba(15, 23, 42, 0.8);
-  width: 30px;
-  height: 30px;
+  background: rgba(15, 23, 42, 0.85);
+  width: 28px;
+  height: 28px;
   border-radius: 999px;
   color: #f9fafb;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 15px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
   transition: background 0.1s ease, transform 0.1s ease;
 }
@@ -178,55 +177,65 @@ body {
   transform: translateY(1px);
 }
 
-/* Area scrollabile fullwidth, testo grande */
+/* Area scrollabile – testo grande, colonna centrale */
 
 .reader-content {
   flex: 1 1 auto;
-  margin-top: 12px;
+  margin-top: 16px;
   padding-right: 0;
   overflow-y: auto;
   scroll-behavior: smooth;
-  -ms-overflow-style: none;  /* IE e Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;    /* Firefox */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-/* Nascondi scrollbar (Chrome, Safari, ecc.) */
+/* nascondi scrollbar (Chrome / WebKit) */
 .reader-content::-webkit-scrollbar {
   display: none;
 }
 
-/* Testo grande e full width */
+/* paragrafi stile lyrics */
 
 .reader-content p {
-  font-size: clamp(18px, 2.2vw, 22px);
-  line-height: 1.8;
-  color: #e5e7eb;
-  margin-bottom: 24px;
-  transition: color 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
-  opacity: 0.45; /* paragrafi non attivi */
+  width: 100%;
+  max-width: 520px; /* colonna come nell’immagine */
+  font-size: clamp(20px, 3vw, 26px);
+  line-height: 1.9;
+  color: #cbd5d1;
+  margin-bottom: 14px;
+  transition: color 0.25s ease, opacity 0.25s ease;
+  opacity: 0.2; /* default: futuro/non letto */
 }
 
-/* Paragrafo attivo evidenziato */
+/* paragrafi già letti */
+
+.reader-content p.read {
+  opacity: 0.7;
+  color: #e2e8f0;
+}
+
+/* paragrafo attivo (quello in focus) */
 
 .reader-content p.active {
   opacity: 1;
   color: #ffffff;
-  transform: scale(1.02);
-  text-shadow: 0 0 18px rgba(0, 0, 0, 0.6);
 }
 
-/* Footer "Spotify-like" */
+/* Footer "barra progresso" */
 
 .reader-footer {
   padding-top: 10px;
   padding-bottom: 4px;
-  border-top: 1px solid rgba(15, 23, 42, 0.7);
+  border-top: 1px solid rgba(15, 23, 42, 0.25);
 }
 
 .reader-progress-row {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 11px;
   color: #e5e7eb;
   margin-bottom: 4px;
 }
@@ -234,9 +243,9 @@ body {
 .reader-progress-track {
   position: relative;
   width: 100%;
-  height: 6px;
+  height: 4px;
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(15, 23, 42, 0.6);
   overflow: hidden;
 }
 
@@ -247,17 +256,18 @@ body {
   height: 100%;
   width: 0%;
   border-radius: 999px;
-  background: #1ed760; /* verde Spotify-ish */
+  background: #ffffff;
 }
 
 /* Responsive */
 
 @media (max-width: 640px) {
   .reader-shell {
-    padding: 14px 16px 10px;
+    padding: 10px 12px 8px;
   }
 
   .reader-content p {
-    font-size: 18px;
+    font-size: 20px;
+    max-width: 100%;
   }
 }

@@ -11,18 +11,27 @@ const progressFill = document.getElementById("reader-progress-fill");
 const wordsPerMinute = 220;
 let totalMinutes = null;
 
+/**
+ * Calcola il tempo totale di lettura in minuti
+ */
 function estimateReadingTime() {
   const text = readerContent.innerText || "";
   const wordCount = text.split(/\s+/).filter(Boolean).length;
   totalMinutes = wordCount / wordsPerMinute;
 }
 
+/**
+ * Format tempo rimanente in stringa leggibile
+ */
 function formatRemaining(minutes) {
   if (!minutes || minutes <= 0.1) return "< 1 min remaining";
   const rounded = Math.ceil(minutes);
   return `${rounded} min remaining`;
 }
 
+/**
+ * Aggiorna progress bar e indicatori di lettura
+ */
 function updateProgress() {
   const scrollTop = readerContent.scrollTop;
   const scrollHeight = readerContent.scrollHeight;
@@ -34,37 +43,77 @@ function updateProgress() {
 
   percentLabel.textContent = `${Math.round(percent)}% Read`;
 
-  // tempo rimanente stimato
   if (totalMinutes != null) {
     const remainingMinutes = totalMinutes * (1 - ratio);
-    timeLabel.innerHTML = formatRemaining(remainingMinutes);
+    timeLabel.textContent = formatRemaining(remainingMinutes);
   }
 
   progressFill.style.width = `${percent}%`;
 }
 
+/**
+ * Evidenzia il paragrafo "attivo" (più vicino alla zona centrale alta)
+ */
+function highlightActiveParagraph() {
+  const paragraphs = Array.from(readerContent.querySelectorAll("p"));
+  if (!paragraphs.length) return;
+
+  const readerRect = readerContent.getBoundingClientRect();
+  const focusY = readerRect.top + 140; // zona di attenzione
+
+  let bestParagraph = null;
+  let smallestDistance = Infinity;
+
+  paragraphs.forEach((p) => {
+    const rect = p.getBoundingClientRect();
+    const distance = Math.abs(rect.top - focusY);
+    if (distance < smallestDistance) {
+      smallestDistance = distance;
+      bestParagraph = p;
+    }
+  });
+
+  paragraphs.forEach((p) => p.classList.remove("active"));
+  if (bestParagraph) bestParagraph.classList.add("active");
+}
+
+/**
+ * Apre il reader
+ */
 openReaderBtn.addEventListener("click", () => {
   readerOverlay.classList.add("active");
   readerOverlay.setAttribute("aria-hidden", "false");
-  // reset scroll all'apertura
   readerContent.scrollTop = 0;
+
   estimateReadingTime();
+  highlightActiveParagraph(); // evidenzia subito il primo paragrafo
   updateProgress();
 });
 
+/**
+ * Chiude il reader
+ */
 closeReaderBtn.addEventListener("click", () => {
   readerOverlay.classList.remove("active");
   readerOverlay.setAttribute("aria-hidden", "true");
 });
 
-readerContent.addEventListener("scroll", () => {
-  requestAnimationFrame(updateProgress);
-});
-
-// chiudi con ESC
+/**
+ * Chiudi con tasto ESC
+ */
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && readerOverlay.classList.contains("active")) {
     readerOverlay.classList.remove("active");
     readerOverlay.setAttribute("aria-hidden", "true");
   }
+});
+
+/**
+ * On scroll: aggiorna progress + highlight
+ */
+readerContent.addEventListener("scroll", () => {
+  requestAnimationFrame(() => {
+    updateProgress();
+    highlightActiveParagraph();
+  });
 });

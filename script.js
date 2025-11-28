@@ -10,6 +10,7 @@ const progressFill = document.getElementById("reader-progress-fill");
 // Stima tempo lettura (parole / 220 wpm)
 const wordsPerMinute = 220;
 let totalMinutes = null;
+let maxReadIndex = -1; // indice massimo raggiunto (per tenere evidenziato ciò che è già letto)
 
 /**
  * Calcola il tempo totale di lettura in minuti
@@ -52,29 +53,45 @@ function updateProgress() {
 }
 
 /**
- * Evidenzia il paragrafo "attivo" (più vicino alla zona centrale alta)
+ * Trova il paragrafo "attivo" e tiene marcati quelli già letti
  */
 function highlightActiveParagraph() {
   const paragraphs = Array.from(readerContent.querySelectorAll("p"));
   if (!paragraphs.length) return;
 
   const readerRect = readerContent.getBoundingClientRect();
-  const focusY = readerRect.top + 140; // zona di attenzione
+  const focusY = readerRect.top + 140; // altezza alla quale consideriamo il testo "in focus"
 
-  let bestParagraph = null;
+  let activeIndex = -1;
   let smallestDistance = Infinity;
 
-  paragraphs.forEach((p) => {
+  paragraphs.forEach((p, index) => {
     const rect = p.getBoundingClientRect();
     const distance = Math.abs(rect.top - focusY);
     if (distance < smallestDistance) {
       smallestDistance = distance;
-      bestParagraph = p;
+      activeIndex = index;
     }
   });
 
-  paragraphs.forEach((p) => p.classList.remove("active"));
-  if (bestParagraph) bestParagraph.classList.add("active");
+  // aggiorna il massimo indice raggiunto (paragrafi già letti)
+  if (activeIndex > maxReadIndex) {
+    maxReadIndex = activeIndex;
+  }
+
+  paragraphs.forEach((p, index) => {
+    p.classList.remove("active");
+
+    if (index <= maxReadIndex) {
+      p.classList.add("read");
+    } else {
+      p.classList.remove("read");
+    }
+  });
+
+  if (activeIndex >= 0) {
+    paragraphs[activeIndex].classList.add("active");
+  }
 }
 
 /**
@@ -84,9 +101,9 @@ openReaderBtn.addEventListener("click", () => {
   readerOverlay.classList.add("active");
   readerOverlay.setAttribute("aria-hidden", "false");
   readerContent.scrollTop = 0;
-
+  maxReadIndex = -1; // reset lettura
   estimateReadingTime();
-  highlightActiveParagraph(); // evidenzia subito il primo paragrafo
+  highlightActiveParagraph(); // evidenzia subito il primo
   updateProgress();
 });
 

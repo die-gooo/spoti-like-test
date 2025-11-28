@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mindful Reading – Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- PAGINA NORMALE -->
+    <main class="page">
+      <header class="site-header">
+        <h1 class="site-logo">MyMag</h1>
+      </header>
+
+      <section class="article-preview">
+        <p class="tag">Mindfulness · Lettura</p>
+        <h2 class="article-title">
+          The Art of Mindful Reading: Rediscovering Focus in a Distracted World
+        </h2>
+        <p class="article-meta">By Sarah Jenkins · October 26, 2024</p>
+
+        <p class="article-excerpt">
+          In an age of constant notifications and fleeting attention spans,
+          the simple act of reading a book has become a radical act of
+          mindfulness. We find ourselves skimming surfaces, scrolling through
+          headlines, and consuming fragmented information that rarely leaves a
+          lasting impression...
+        </p>
+
+        <button id="open-reader" class="btn-primary">
+          Leggi altro
+        </button>
+      </section>
+    </main>
+
+    <!-- OVERLAY LETTURA FULLSCREEN -->
+    <div id="reader-overlay" class="reader-overlay" aria-hidden="true">
+      <div class="reader-shell">
+        <header class="reader-header">
+          <div>
+            <p class="reader-tag">Mindfulness · Article</p>
+            <h1 class="reader-title">
+              The Art of Mindful Reading: Rediscovering Focus in a Distracted World
+            </h1>
+            <p class="reader-meta">By Sarah Jenkins · October 26, 2024</p>
+          </div>
+
+          <button id="close-reader" class="reader-close" aria-label="Chiudi lettura">
+            ✕
+          </button>
+        </header>
+
+        <section id="reader-content" class="reader-content">
+          <!-- Testo lungo di esempio -->
+          <p>
+            In an age of constant notifications and fleeting attention spans,
+            the simple act of reading a book has become a radical act of
+            mindfulness. We find ourselves skimming surfaces, scrolling through
+            headlines, and consuming fragmented information that rarely leaves a
+            lasting impression. Yet, the transformative power of deep reading
+            remains within our reach, offering a sanctuary for the mind and a
+            pathway to profound understanding.
+          </p>
+          <p>
+            To reclaim this lost art, we must first quiet the noise. That means
+            intentionally carving out spaces in our day where we are not pulled
+            in a dozen directions at once. It means resisting the urge to reach
+            for our phones every few minutes, and instead, allowing ourselves to
+            sink fully into the world of a single page.
+          </p>
+          <p>
+            Mindful reading is not about speed or volume; it is about presence.
+            When we approach a text with curiosity and patience, we begin to
+            notice the cadence of the sentences, the weight of certain words,
+            the subtle clues that reveal a character’s inner life or an
+            argument’s hidden assumptions. The book becomes less an object to be
+            finished and more a conversation to be entered into.
+          </p>
+          <p>
+            This kind of reading also changes the way we remember. Rather than
+            fragmented impressions that fade as soon as we swipe them away,
+            mindful reading creates durable memories rooted in emotion and
+            reflection. We do not just recall what happened in a story; we
+            remember how it made us feel, and what it revealed about our own
+            lives.
+          </p>
+          <p>
+            In a distracted world, choosing to read deeply is a quiet form of
+            rebellion. It is a way of saying that your attention is precious and
+            that you will not spend it carelessly. By giving ourselves fully to
+            a single page, a single paragraph, a single sentence, we rediscover
+            not only the joy of reading, but the steady, focused mind that
+            modern life so often erodes.
+          </p>
+          <p>
+            The invitation is simple: find a book, find a quiet place, and let
+            yourself be led. Turn each page as if it matters—because it does.
+            In these small, deliberate acts of attention, we begin to rebuild
+            our capacity for focus, our tolerance for stillness, and our
+            openness to being changed by what we read.
+          </p>
+          <!-- fine testo esempio -->
+        </section>
+
+        <footer class="reader-footer">
+          <div class="reader-progress-row">
+            <span id="percent-read">0% Read</span>
+            <span id="time-remaining">-- min remaining</span>
+          </div>
+          <div class="reader-progress-track">
+            <div id="reader-progress-fill" class="reader-progress-fill"></div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
